@@ -1,0 +1,25 @@
+{
+  "name": "sample-vue-app",
+  "version": "1.0.0",
+  "description": "to explore the vue js features",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/subaira2004/sample-vue-app.git"
+  },
+  "keywords": [
+    "vue",
+    "node",
+    "sample",
+    "app"
+  ],
+  "author": "zubair",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/subaira2004/sample-vue-app/issues"
+  },
+  "homepage": "https://github.com/subaira2004/sample-vue-app#readme"
+}
