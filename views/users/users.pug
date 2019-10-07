@@ -1,0 +1,8 @@
+extends ../layout.pug
+block csses
+    link(rel="stylesheet" type="text/css" href="css/user.css")
+block content-body
+    div(class="row" id="userApp") {{ message }}
+block scriptsbottom    
+    script(src="users/dist/user.js")
+    

@@ -2,9 +2,10 @@
   "name": "sample-vue-app",
   "version": "1.0.0",
   "description": "to explore the vue js features",
-  "main": "index.html",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack && node app"
   },
   "repository": {
     "type": "git",
@@ -21,5 +22,27 @@
   "bugs": {
     "url": "https://github.com/subaira2004/sample-vue-app/issues"
   },
-  "homepage": "https://github.com/subaira2004/sample-vue-app#readme"
+  "homepage": "https://github.com/subaira2004/sample-vue-app#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.5.0",
+    "@babel/core": "^7.5.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/preset-env": "^7.5.4",
+    "babel-loader": "^8.0.6",
+    "vue-loader": "^15.7.1",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.35.3",
+    "webpack-cli": "^3.3.5"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "connect-mongo": "^3.0.0",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "mongodb": "^3.2.7",
+    "pug": "^2.0.4",
+    "vue": "^2.6.10",
+    "axios": "^0.19.0"
+  }
 }
