@@ -8,7 +8,7 @@
       <li :class="firstPrevClass">
         <a :class="pagerClasses.pageLink" href="#">Previous</a>
       </li>
-      <li :class="pagerClasses.pageItem" v-for="page in pages" @click="gotoPage(page)">
+      <li  v-for="page in pages"  :class="page.className" @click="gotoPage(page.pageNumber)">
         <a :class="pagerClasses.pageLink" href="#">page</a>
       </li>
       <li :class="lastNextClass">
@@ -77,7 +77,14 @@ export default {
       var minPage = maxPage - this.dispNoOfPages;
       minPage = minPage < 1 ? 1 : minPage;
       for (var i = minPage; i <= maxpage; i++) {
-        _pages.push(i);
+        var tmpCalssNames =
+          this.pagerClasses.pageItem +
+          " " +
+          (i == this.currentPage ? this.pagerClasses.activeClass : "");
+        _pages.push({
+          pageNumber: i,
+          className: tmpCalssNames
+        });
       }
 
       return _pages;
