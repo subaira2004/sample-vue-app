@@ -11,12 +11,27 @@ var dataBind = {
     { dataColumn: "designation", title: "Designation" },
     { dataColumn: "department", title: "Department" }
   ],
-  gridData: [],
+  gridPagerProps: {
+    pageSize: 1,
+    totalRecords: 0,
+    pagerClasses: {
+      pagination: "pagination",
+      pageLink: "page-link",
+      pageItem: "page-item",
+      active: "active",
+      disabled: "disabled"
+    },
+  },
   gridLoad: function (comp) {
-    Axios.get('/users/json')
+    var gotoPage = (comp && comp.pagerInstance) ? comp.pagerInstance.gotoPageNum : 1;
+    Axios.get('/users/json?currentPage=' + gotoPage + '&pageSize=' + dataBind.gridPagerProps.pageSize)
       .then(function (response) {
         // handle success
         comp.gridData = response.data.users;
+        dataBind.gridPagerProps.totalRecords = parseInt(response.data.records)
+        if (comp.pagerInstance) {
+          comp.pagerInstance.currentPage = parseInt(response.data.currentPage);
+        }
         dataBind.message = "data received!";
       })
       .catch(function (error) {
@@ -32,7 +47,7 @@ var dataBind = {
 
 var user = new Vue({
   el: "#userApp",
-  components:{'grid':girdComponent},
+  components: { 'grid': girdComponent },
   data: dataBind,
   created: function () {
     dataBind.message = "requesting";

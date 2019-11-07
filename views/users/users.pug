@@ -3,7 +3,7 @@ block csses
     link(rel="stylesheet" type="text/css" href="css/user.css")
 block content-body
     div(class="row" id="userApp") 
-            grid(:grid-cols="gridCols"  :grid-class="gridClass" @on-load="gridLoad")      
+            grid(:grid-cols="gridCols"  :grid-class="gridClass" @on-load="gridLoad" :pager-props="gridPagerProps" @on-paging="gridLoad")      
 block scriptsbottom    
     script(src="users/dist/user.js")
     

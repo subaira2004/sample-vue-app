@@ -3,19 +3,31 @@
   <nav>
     <ul :class="pagerClasses.pagination">
       <li :class="firstPrevClass">
-        <a :class="pagerClasses.pageLink" href="#">First</a>
+        <a :class="pagerClasses.pageLink" href="javascript:void(0);" @click="gotoPage(1)">First</a>
       </li>
       <li :class="firstPrevClass">
-        <a :class="pagerClasses.pageLink" href="#">Previous</a>
+        <a
+          :class="pagerClasses.pageLink"
+          href="javascript:void(0);"
+          @click="gotoPage(prevPage)"
+        >Previous</a>
       </li>
-      <li  v-for="page in pages"  :class="page.className" @click="gotoPage(page.pageNumber)">
-        <a :class="pagerClasses.pageLink" href="#">page</a>
+      <li v-for="page in pages" :class="page.className" @click="gotoPage(page.pageNumber)">
+        <a :class="pagerClasses.pageLink" href="javascript:void(0);">{{page.pageNumber}}</a>
       </li>
       <li :class="lastNextClass">
-        <a :class="pagerClasses.pageLink" href="#">Next</a>
+        <a
+          :class="pagerClasses.pageLink"
+          href="javascript:void(0);"
+          @click="gotoPage(nextPage)"
+        >Next</a>
       </li>
-      <li ::class="lastNextClass">
-        <a :class="pagerClasses.pageLink" href="#">Last</a>
+      <li :class="lastNextClass">
+        <a
+          :class="pagerClasses.pageLink"
+          href="javascript:void(0);"
+          @click="gotoPage(lastPage)"
+        >Last</a>
       </li>
     </ul>
   </nav>
@@ -36,7 +48,7 @@ export default {
       dispNoOfPages: 10
     };
   },
-  ready: function() {
+  created: function() {
     this.handleResize();
     window.addEventListener("resize", this.handleResize);
   },
@@ -45,8 +57,10 @@ export default {
   },
   methods: {
     gotoPage: function(pageNum) {
-      this.gotoPageNum = pageNum;
-      this.$emit("goto-page", this);
+      if (this.currentPage != pageNum) {
+        this.gotoPageNum = pageNum;
+        this.$emit("goto-page", this);
+      }
     },
     handleResize: function(e) {
       var winWidth = window.innerWidth;
@@ -55,45 +69,25 @@ export default {
       } else {
         this.dispNoOfPages = 10;
       }
-      if (this.dispNoOfPages > this.lastPage) {
-        this.dispNoOfPages = this.lastPage;
-      }
     }
   },
   computed: {
     // a computed getter
-    pages: function() {
-      var _pages = [];
-      if (this.currentPage > this.lastPage) {
-        this.currentPage = this.lastPage;
-      }
-
-      var firstPageFinder =
-        parseInt(this.dispNoOfPages / 2) +
-        (parseInt(this.dispNoOfPages % 2) > 0 ? 1 : 0);
-
-      var maxPage = this.currentPage + firstPageFinder;
-      maxPage = maxPage > this.lastPage ? this.lastPage : maxpage;
-      var minPage = maxPage - this.dispNoOfPages;
-      minPage = minPage < 1 ? 1 : minPage;
-      for (var i = minPage; i <= maxpage; i++) {
-        var tmpCalssNames =
-          this.pagerClasses.pageItem +
-          " " +
-          (i == this.currentPage ? this.pagerClasses.activeClass : "");
-        _pages.push({
-          pageNumber: i,
-          className: tmpCalssNames
-        });
-      }
-
-      return _pages;
-    },
     lastPage: function() {
       var _lastPage =
         parseInt(this.totalRecords / this.pageSize) +
         (parseInt(this.totalRecords % this.pageSize) > 0 ? 1 : 0);
       return _lastPage;
+    },
+    nextPage: function() {
+      return this.currentPage + 1 <= this.lastPage
+        ? this.currentPage + 1
+        : this.currentPage;
+    },
+    prevPage: function() {
+      return this.currentPage - 1 >= 1
+        ? this.currentPage - 1
+        : this.currentPage;
     },
     firstPrevClass: function() {
       return (
@@ -112,6 +106,39 @@ export default {
     },
     isDisableLastNext: function() {
       return this.currentPage === this.lastPage;
+    },
+
+    pages: function() {
+      var _pages = [];
+      if (this.currentPage > this.lastPage && this.lastPage > 0) {
+        this.currentPage = this.lastPage;
+      }
+
+      var firstPageFinder =
+        parseInt(this.dispNoOfPages / 2) +
+        (parseInt(this.dispNoOfPages % 2) > 0 ? 1 : 0);
+
+      var maxPage =
+        this.dispNoOfPages >= this.lastPage
+          ? this.lastPage
+          : this.currentPage < firstPageFinder
+          ? this.dispNoOfPages
+          : this.currentPage + firstPageFinder;
+      maxPage = maxPage > this.lastPage ? this.lastPage : maxPage;
+      var minPage = maxPage - this.dispNoOfPages+1;
+      minPage = minPage < 1 ? 1 : minPage;
+      for (var i = minPage; i <= maxPage; i++) {
+        var tmpCalssNames =
+          this.pagerClasses.pageItem +
+          " " +
+          (i == this.currentPage ? this.pagerClasses.active : "");
+        _pages.push({
+          pageNumber: i,
+          className: tmpCalssNames
+        });
+      }
+
+      return _pages;
     }
   }
 };

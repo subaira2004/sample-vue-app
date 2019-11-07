@@ -13,11 +13,11 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="{{gridCols.length}}">
+        <td :colspan="gridCols.length">
           <pager
             :pager-classes="pagerProps.pagerClasses"
-            :page-size="pagerProps.pageSize"
             :total-records="pagerProps.totalRecords"
+            :page-size="pagerProps.pageSize"
             @goto-page="onPaging"
           />
         </td>
@@ -33,15 +33,15 @@ export default {
   props: {
     gridClass: Array,
     gridCols: Array,
-    pagerProps: Object,
-    pagerInstance: Object
+    pagerProps: Object
   },
   components: {
     pager: pagerComponent
   },
   data: function() {
     return {
-      gridData: [{ id: "234" }]
+      gridData: [{ id: "234" }],
+      pagerInstance: null
     };
   },
   created: function() {
@@ -51,7 +51,8 @@ export default {
     onLoad: function() {
       this.$emit("on-load", this);
     },
-    onPaging: function() {
+    onPaging: function(pageComp) {
+      this.pagerInstance = pageComp;
       this.$emit("on-paging", this);
     }
   }
