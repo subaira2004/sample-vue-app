@@ -40,7 +40,7 @@ export default {
   },
   data: function() {
     return {
-      gridData: [{ id: "234" }],
+      gridData: [{ }],
       pagerInstance: null
     };
   },

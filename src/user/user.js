@@ -12,7 +12,7 @@ var dataBind = {
     { dataColumn: "department", title: "Department" }
   ],
   gridPagerProps: {
-    pageSize: 1,
+    pageSize: 5,
     totalRecords: 0,
     pagerClasses: {
       pagination: "pagination",
