@@ -2,8 +2,14 @@ extends ../layout.pug
 block csses
     link(rel="stylesheet" type="text/css" href="css/user.css")
 block content-body
-    div(class="row" id="userApp") 
+    div(class="row") 
+        div(class="col-sm-12" id="userApp") 
+            div(class="row")
+                div(class="col-sm-12")
+                    button(type="button" class="btn btn-outline-primary" @click="newUser") Add 
+                        span(class="oi oi-plus")                                                             
             grid(:grid-cols="gridCols"  :grid-class="gridClass" @on-load="gridLoad" :pager-props="gridPagerProps" @on-paging="gridLoad")      
+            usermanipulation(:mode="userManipulationProps.mode" :id="userManipulationProps.id" @on-edit="editUserData")
 block scriptsbottom    
     script(src="users/dist/user.js")
     

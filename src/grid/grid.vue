@@ -1,29 +1,32 @@
 
 <template>
-  <table :class="gridClass">
-    <thead>
-      <tr>
-        <th v-for="col in gridCols">{{ col.title }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="rowData in gridData">
-        <td v-for="col in gridCols">{{ rowData[col.dataColumn]}}</td>
-      </tr>
-    </tbody>
-    <tfoot>
-      <tr>
-        <td :colspan="gridCols.length">
-          <pager
-            :pager-classes="pagerProps.pagerClasses"
-            :total-records="pagerProps.totalRecords"
-            :page-size="pagerProps.pageSize"
-            @goto-page="onPaging"
-          />
-        </td>
-      </tr>
-    </tfoot>
-  </table>
+  <div class="row pt-1">
+    <div class="col-sm-12">
+      <pager
+        :pager-classes="pagerProps.pagerClasses"
+        :total-records="pagerProps.totalRecords"
+        :page-size="pagerProps.pageSize"
+        @goto-page="onPaging"
+      />
+    </div>
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <table :class="gridClass">
+        <thead>
+          <tr>
+            <th v-for="col in gridCols">{{ col.title }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="rowData in gridData">
+            <td v-for="col in gridCols">
+              <span v-if="col.colType=='string'">{{ rowData[col.dataColumn]}}</span>
+              <div v-if="col.colType=='template'" v-html="rowData[col.dataColumn]"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </template>
 <script>
 import Vue from "vue";
@@ -40,7 +43,7 @@ export default {
   },
   data: function() {
     return {
-      gridData: [{ }],
+      gridData: [{}],
       pagerInstance: null
     };
   },
