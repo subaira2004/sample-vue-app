@@ -17,6 +17,9 @@
           </tr>
         </thead>
         <tbody>
+          <tr v-if="gridData.length==0">
+            <td class="text-center" :colspan="gridCols.length">No data found!</td>
+          </tr>
           <tr v-for="rowData in gridData" v-bind:key="rowData.col">
             <td v-for="col in gridCols" v-bind:key="col.dataColumn">
               <span v-if="col.colType=='string'">{{ rowData[col.dataColumn]}}</span>
@@ -63,7 +66,7 @@ export default {
               actionClass: "",
               actionHref: "",
               actionHtml: "",
-              actionData:{}
+              actionData: {}
             }
           ]
         }

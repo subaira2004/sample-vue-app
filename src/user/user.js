@@ -152,12 +152,12 @@ var user = new vue({
                 actionData: { actionType: "edit", ref: tmpName },
                 actionHtml: "Edit <span class='oi oi-pencil'></span>",
                 actionHref: "javascript:void(0)",
-                actionClass: "btn btn-outline-secondary mr-1"
+                actionClass: "btn btn-sm btn-outline-secondary mr-1"
               }, {
                 actionData: { actionType: "delete", ref: tmpName },
-                actionHtml: "Delete <span class='oi oi-'delete></span>",
+                actionHtml: "Delete <span class='oi oi-delete'></span>",
                 actionHref: "javascript:void(0)",
-                actionClass: "btn btn-outline-danger"
+                actionClass: "btn btn-sm btn-outline-danger"
               }
             ]
           }

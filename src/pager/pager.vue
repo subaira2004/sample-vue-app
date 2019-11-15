@@ -1,6 +1,6 @@
 
 <template>
-  <nav>
+  <nav v-if="totalRecords>0">
     <ul :class="pagerClasses.pagination">
       <li :class="firstPrevClass">
         <a :class="pagerClasses.pageLink" href="javascript:void(0);" @click="gotoPage(1)">First</a>
@@ -12,7 +12,12 @@
           @click="gotoPage(prevPage)"
         >Previous</a>
       </li>
-      <li v-for="page in pages" :class="page.className" @click="gotoPage(page.pageNumber)">
+      <li
+        v-for="page in pages"
+        v-bind:key="page.pageNumber"
+        :class="page.className"
+        @click="gotoPage(page.pageNumber)"
+      >
         <a :class="pagerClasses.pageLink" href="javascript:void(0);">{{page.pageNumber}}</a>
       </li>
       <li :class="lastNextClass">
@@ -102,16 +107,17 @@ export default {
       );
     },
     isDisableFirstPrev: function() {
-      return this.currentPage === 1;
+      return this.currentPage === 1 || this.lastPage <= 1;
     },
     isDisableLastNext: function() {
-      return this.currentPage === this.lastPage;
+      return (this.currentPage === this.lastPage || this.lastPage <= 1);
     },
 
     pages: function() {
       var _pages = [];
-      if (this.currentPage > this.lastPage && this.lastPage > 0) {
-        this.currentPage = this.lastPage;
+      if (this.lastPage > 0 && this.currentPage > this.lastPage ) {
+        this.gotoPage(this.lastPage);
+        return;
       }
 
       var firstPageFinder =
@@ -125,7 +131,7 @@ export default {
           ? this.dispNoOfPages
           : this.currentPage + firstPageFinder;
       maxPage = maxPage > this.lastPage ? this.lastPage : maxPage;
-      var minPage = maxPage - this.dispNoOfPages+1;
+      var minPage = maxPage - this.dispNoOfPages + 1;
       minPage = minPage < 1 ? 1 : minPage;
       for (var i = minPage; i <= maxPage; i++) {
         var tmpCalssNames =
