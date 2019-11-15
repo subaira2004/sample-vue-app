@@ -13,14 +13,25 @@
       <table :class="gridClass">
         <thead>
           <tr>
-            <th v-for="col in gridCols">{{ col.title }}</th>
+            <th v-for="col in gridCols" v-bind:key="col.dataColumn">{{ col.title }}</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="rowData in gridData">
-            <td v-for="col in gridCols">
+          <tr v-for="rowData in gridData" v-bind:key="rowData.col">
+            <td v-for="col in gridCols" v-bind:key="col.dataColumn">
               <span v-if="col.colType=='string'">{{ rowData[col.dataColumn]}}</span>
               <div v-if="col.colType=='template'" v-html="rowData[col.dataColumn]"></div>
+              <template v-if="col.colType=='action'">
+                <grid-action
+                  v-for="action in rowData.gridActions"
+                  @action-click="gridActionClick"
+                  :action-class="action.actionClass"
+                  :action-href="action.actionHref"
+                  :action-html="action.actionHtml"
+                  :action-data="action.actionData"
+                  v-bind:key="action.actionClass"
+                />
+              </template>
             </td>
           </tr>
         </tbody>
@@ -31,6 +42,7 @@
 <script>
 import Vue from "vue";
 import pagerComponent from "../pager/pager.vue";
+import gridActionComponent from "../grid/gridAction.vue";
 
 export default {
   props: {
@@ -39,12 +51,25 @@ export default {
     pagerProps: Object
   },
   components: {
-    pager: pagerComponent
+    pager: pagerComponent,
+    "grid-action": gridActionComponent
   },
   data: function() {
     return {
-      gridData: [{}],
-      pagerInstance: null
+      gridData: [
+        {
+          gridActions: [
+            {
+              actionClass: "",
+              actionHref: "",
+              actionHtml: "",
+              actionData:{}
+            }
+          ]
+        }
+      ],
+      pagerInstance: null,
+      currentAction: null
     };
   },
   created: function() {
@@ -57,6 +82,10 @@ export default {
     onPaging: function(pageComp) {
       this.pagerInstance = pageComp;
       this.$emit("on-paging", this);
+    },
+    gridActionClick: function(gridActionComp) {
+      this.currentAction = gridActionComp;
+      this.$emit("on-grid-action-click", this);
     }
   }
 };

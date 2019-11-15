@@ -8,8 +8,8 @@ block content-body
                 div(class="col-sm-12")
                     button(type="button" class="btn btn-outline-primary" @click="newUser") Add 
                         span(class="oi oi-plus")                                                             
-            grid(:grid-cols="gridCols"  :grid-class="gridClass" @on-load="gridLoad" :pager-props="gridPagerProps" @on-paging="gridLoad")      
-            usermanipulation(:mode="userManipulationProps.mode" :id="userManipulationProps.id" @on-edit="editUserData")
+            grid(:grid-cols="gridCols"  :grid-class="gridClass" @on-load="gridLoad" :pager-props="gridPagerProps" @on-paging="gridLoad" @on-grid-action-click="onGridActionClick")      
+            usermanipulation( :id="userManipulationProps.id" @on-save="saveUserData"  @on-load="onUserManipulationLoad")
 block scriptsbottom    
     script(src="users/dist/user.js")
     

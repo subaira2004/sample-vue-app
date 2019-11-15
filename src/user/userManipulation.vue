@@ -12,18 +12,24 @@
           <form>
             <div class="form-group">
               <label for="txtName" class="col-form-label">Name</label>
-              <input type="text" class="form-control" :bind="userData.name" id="txtName" />
+              <input
+                type="text"
+                class="form-control"
+                v-model="userData.name"
+                id="txtName"
+                :disabled="mode!='New'"
+              />
             </div>
             <div class="form-group">
               <label for="txtAge" class="col-form-label">Age</label>
-              <input type="text" class="form-control" :bind="userData.age" id="txtAge" />
+              <input type="text" class="form-control" v-model="userData.age" id="txtAge" />
             </div>
             <div class="form-group">
               <label for="txtDepartment" class="col-form-label">Department</label>
               <input
                 type="text"
                 class="form-control"
-                :bind="userData.department"
+                v-model="userData.department"
                 id="txtDepartment"
               />
             </div>
@@ -32,19 +38,20 @@
               <input
                 type="text"
                 class="form-control"
-                :bind="userData.designation"
+                v-model="userData.designation"
                 id="txtDesignation"
               />
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-outline-primary"
-            @click="saveUser"
-          >{{modalActionTitle}}</button>
-          <button type="button" class="btn btn-outline-danger" @click="close">Close</button>
+          <button type="button" class="btn btn-outline-primary" @click="saveUser">
+            <span class="oi oi-check"></span>
+            {{modalActionTitle}}
+          </button>
+          <button type="button" class="btn btn-outline-danger" @click="close">
+            <span class="oi oi-x"></span> Close
+          </button>
         </div>
       </div>
     </div>
@@ -54,7 +61,7 @@
 import Vue from "vue";
 
 var newUserData = {
-  id: "",
+  _id: "",
   name: "",
   age: 0,
   department: "",
@@ -63,35 +70,30 @@ var newUserData = {
 
 export default {
   props: {
-    mode: String,
     id: String
   },
   data: function() {
     return {
       userData: newUserData,
+      mode: "New",
       title: "Add New User",
       modalClass: "modal fade",
       modalActionTitle: "Save"
     };
   },
   created: function() {
-    this.initUser();
+    this.$emit("on-load", this);
   },
   methods: {
-    initUser: function() {
-      if (this.mode === "add") {
-        this.userData = newUserData;
-        this.title = "Add New User";
-        this.modalClass = "modal fade show";
-        this.modalActionTitle = "Save";
-      } else{
-        this.$emit("on-edit", this);
-      }
+    show: function() {
+      $("#" + this.id).modal("show");
     },
     close: function() {
-      $("#"+this.id).modal('hide');
+      $("#" + this.id).modal("hide");
     },
-    saveUser: function() {}
+    saveUser: function() {
+      this.$emit("on-save", this);
+    }
   }
 };
 </script>
