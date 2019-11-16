@@ -136,17 +136,13 @@ var user = new vue({
     },
     gridLoad: function (comp) {
       this.gridComp = comp;
-      var editUser = this.editUser;
-      var deleteUser = this.deleteUser;
       var gotoPage = (comp && comp.pagerInstance) ? comp.pagerInstance.gotoPageNum : 1;
       axios.get('/users/json?currentPage=' + gotoPage + '&pageSize=' + dataBind.gridPagerProps.pageSize)
-        .then(function (response) {
-          console.log(editUser);
+        .then(function (response) {          
           // handle success
           var tmpGridDataArr = response.data.users;
           for (var i = 0; i < tmpGridDataArr.length; i++) {
             var tmpName = tmpGridDataArr[i].name
-
             tmpGridDataArr[i].gridActions = [
               {
                 actionData: { actionType: "edit", ref: tmpName },
