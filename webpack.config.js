@@ -2,7 +2,7 @@ const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 const homeConfigs = {
-  mode: "development",
+  mode: "production",
   entry: './src/home.js',
   module: {
     rules: [{
@@ -23,7 +23,7 @@ const homeConfigs = {
 };
 
 const userConfigs = {
-  mode: "development",
+  mode: "production",
   entry: './src/user/user.js',
   resolve: {
     alias: {
